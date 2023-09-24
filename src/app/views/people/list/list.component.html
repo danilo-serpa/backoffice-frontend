@@ -1,1 +1,23 @@
-<p>list works!</p>
+<h2>Lista de Pessoas</h2>
+<table [hover]="true" cTable>
+  <thead>
+    <tr>
+      <th scope="col">#</th>
+      <th scope="col">Documento</th>
+      <th scope="col">Nome</th>
+      <th scope="col">Apelido</th>
+      <th scope="col">Endereço</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let people of peoples; let index = index">
+      <th scope="row">{{index+1}}</th>
+      <td>{{ people.document }}</td>
+      <td>{{ people.name }}</td>
+      <td>{{ people.nickname }}</td>
+      <td>{{ people.address }}</td>
+    </tr>
+  </tbody>
+</table>
+
+<div class="mt-2 text-center" *ngIf="!peoples.length">Nenhum dado exibido.</div>

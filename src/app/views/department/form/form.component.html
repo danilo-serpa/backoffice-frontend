@@ -1,1 +1,33 @@
-<p>form works!</p>
+<!-- <c-alert color="{{alert.type}}" *ngFor="let alert of alerts">{{alert.message}}</c-alert> -->
+<c-alert color="{{alert.type}}" class="d-flex align-items-center" *ngFor="let alert of alerts">
+    <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Info:"><use xlink:href="#exclamation-triangle-fill"/></svg>
+    <div>{{alert.message}}</div>
+</c-alert>
+<form [formGroup]="departmentForm" (ngSubmit)="onSubmit()">
+  <c-row class="mb-3">
+    <label cLabel class="col-sm-2 col-form-label" for="name"> Nome </label>
+    <c-col sm="10">
+      <input cFormControl id="name" formControlName="name" required type="text" />
+      <c-form-feedback [valid]="true">
+        Por favor, informe o Nome.
+      </c-form-feedback>
+    </c-col>
+  </c-row>
+  <c-row class="mb-3">
+    <label cLabel class="col-sm-2 col-form-label" for="name">
+      Responsável
+    </label>
+    <c-col sm="10">
+      <select id="peopleId" formControlName="peopleId" aria-label="Default select example" cSelect>
+        <option>Selecione um Responsável</option>
+        <option *ngFor="let people of peoples" value="{{ people.id }}">
+          {{ people.name }}
+        </option>
+      </select>
+      <c-form-feedback [valid]="false"
+        >Por favor, informe o Responsável.</c-form-feedback
+      >
+    </c-col>
+  </c-row>
+  <button cButton type="submit">Salvar</button>
+</form>

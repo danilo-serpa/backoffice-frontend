@@ -1,1 +1,40 @@
-<p>form works!</p>
+<c-alert color="{{alert.type}}" class="d-flex align-items-center" *ngFor="let alert of alerts">
+    <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Info:"><use xlink:href="#exclamation-triangle-fill"/></svg>
+    <div>{{alert.message}}</div>
+</c-alert>
+<form [formGroup]="peopleForm" (ngSubmit)="onSubmit()">
+  <c-row class="mb-3">
+    <label cLabel class="col-sm-2 col-form-label" for="inputEmail3">
+      CPF/CNPJ
+    </label>
+    <c-col sm="10">
+      <input cFormControl id="document" formControlName="document" type="text" />
+    </c-col>
+  </c-row>
+  <c-row class="mb-3">
+    <label cLabel class="col-sm-2 col-form-label" for="inputPassword3">
+      Nome
+    </label>
+    <c-col sm="10">
+      <input cFormControl id="name" formControlName="name" required type="text" />
+      <c-form-feedback [valid]="false">Por favor, informe o Nome.</c-form-feedback>
+    </c-col>
+  </c-row>
+  <c-row class="mb-3">
+    <label cLabel class="col-sm-2 col-form-label" for="inputPassword3">
+      Apelido
+    </label>
+    <c-col sm="10">
+      <input cFormControl id="nickname" formControlName="nickname" type="text" />
+    </c-col>
+  </c-row>
+  <c-row class="mb-3">
+    <label cLabel class="col-sm-2 col-form-label" for="inputPassword3">
+      Endereço
+    </label>
+    <c-col sm="10">
+      <input cFormControl id="address" formControlName="address" type="text" />
+    </c-col>
+  </c-row>
+  <button cButton type="submit">Salvar</button>
+</form>

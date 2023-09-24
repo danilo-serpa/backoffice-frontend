@@ -1,106 +1,27 @@
-<c-col xs="12">
-    <c-card class="mb-4">
-      <c-card-header>
-        <strong>Angular Table</strong> <small>Hoverable rows</small>
-      </c-card-header>
-      <c-card-body>
-        <p class="text-medium-emphasis small">
-          Use <code>[hover]="true"</code> property to enable a hover state on table rows within a
-          <code>&lt;tbody&gt;</code>.
-        </p>
-        <app-docs-example href="components/table#hoverable-rows">
-          <table [hover]="true" cTable>
-            <thead>
-            <tr>
-              <th scope="col">#</th>
-              <th scope="col">Class</th>
-              <th scope="col">Heading</th>
-              <th scope="col">Heading</th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr>
-              <th scope="row">1</th>
-              <td>Mark</td>
-              <td>Otto</td>
-              <td>@mdo</td>
-            </tr>
-            <tr>
-              <th scope="row">2</th>
-              <td>Jacob</td>
-              <td>Thornton</td>
-              <td>@fat</td>
-            </tr>
-            <tr>
-              <th scope="row">3</th>
-              <td colSpan="2">Larry the Bird</td>
-              <td>@twitter</td>
-            </tr>
-            </tbody>
-          </table>
-        </app-docs-example>
-        <app-docs-example href="components/table#hoverable-rows">
-          <table [hover]="true" cTable color="dark">
-            <thead>
-            <tr>
-              <th scope="col">#</th>
-              <th scope="col">Class</th>
-              <th scope="col">Heading</th>
-              <th scope="col">Heading</th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr>
-              <th scope="row">1</th>
-              <td>Mark</td>
-              <td>Otto</td>
-              <td>@mdo</td>
-            </tr>
-            <tr>
-              <th scope="row">2</th>
-              <td>Jacob</td>
-              <td>Thornton</td>
-              <td>@fat</td>
-            </tr>
-            <tr>
-              <th scope="row">3</th>
-              <td colSpan="2">Larry the Bird</td>
-              <td>@twitter</td>
-            </tr>
-            </tbody>
-          </table>
-        </app-docs-example>
-        <app-docs-example href="components/table#hoverable-rows">
-          <table [hover]="true" [striped]="true" cTable>
-            <thead>
-            <tr>
-              <th scope="col">#</th>
-              <th scope="col">Class</th>
-              <th scope="col">Heading</th>
-              <th scope="col">Heading</th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr>
-              <th scope="row">1</th>
-              <td>Mark</td>
-              <td>Otto</td>
-              <td>@mdo</td>
-            </tr>
-            <tr>
-              <th scope="row">2</th>
-              <td>Jacob</td>
-              <td>Thornton</td>
-              <td>@fat</td>
-            </tr>
-            <tr>
-              <th scope="row">3</th>
-              <td colSpan="2">Larry the Bird</td>
-              <td>@twitter</td>
-            </tr>
-            </tbody>
-          </table>
-        </app-docs-example>
-      </c-card-body>
-    </c-card>
-  </c-col>
+<c-alert color="{{alert.type}}" class="d-flex align-items-center" *ngFor="let alert of alerts">
+  <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Info:"><use xlink:href="#exclamation-triangle-fill"/></svg>
+  <div>{{alert.message}}</div>
+</c-alert>
+<h2>Lista de Departamentos</h2>
+<table [hover]="true" cTable>
+  <thead>
+    <tr>
+      <th scope="col" class="col-1">#</th>
+      <th scope="col" class="col-10">Nome</th>
+      <th scope="col" class="col-1"></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let department of departments; let index = index">
+      <th scope="row">{{index+1}}</th>
+      <td>{{ department.name }}</td>
+      <td class="d-flex justify-content-end">
+        <a (click)="remove(department.id)">
+          <svg cIcon name="cil-trash" [title]="'Excluir'" size="1xl"></svg>
+        </a>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<div class="mt-2 text-center" *ngIf="!departments.length">Nenhum dado exibido.</div>
