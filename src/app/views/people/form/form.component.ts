@@ -78,6 +78,7 @@ export class FormComponent implements OnInit {
         },
       });
     } else {
+      this.peopleForm.value.id = 0;
       this.peopleService.save(this.peopleForm.value).subscribe({
         next: () => {
           this.loader = false;

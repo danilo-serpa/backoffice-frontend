@@ -54,7 +54,7 @@ export class FormComponent implements OnInit {
 
   getPeoples() {
     this.loader = true;
-    this.peopleService.getAll().subscribe({
+    this.peopleService.getAllColaborator().subscribe({
       next: (result) => {
         this.loader = false;
         this.peoples = result;
@@ -84,6 +84,7 @@ export class FormComponent implements OnInit {
         },
       });
     } else {
+      this.departmentForm.value.id = 0;
       this.departmentService.save(this.departmentForm.value).subscribe({
         next: () => {
           this.loader = false;
