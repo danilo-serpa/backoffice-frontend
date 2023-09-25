@@ -1,44 +1,93 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
+import {
+  FormBuilder,
+  FormControl,
+  FormGroup,
+  Validators,
+} from '@angular/forms';
 import { PeopleService } from '../people.service';
 import { People } from '../people.model';
+import { AlertModel } from 'src/app/shared/model/alert.model.ts';
+import { ActivatedRoute } from '@angular/router';
+import { KindPerson } from 'src/app/shared/enum/kind-person';
+import { ProfileType } from 'src/app/shared/enum/profile-type';
 
 @Component({
   selector: 'app-form',
   templateUrl: './form.component.html',
-  styleUrls: ['./form.component.scss']
+  styleUrls: ['./form.component.scss'],
 })
-export class FormComponent implements OnInit{
-  public alerts: { type: string; message: string }[] = [];
+export class FormComponent implements OnInit {
+  public alerts: AlertModel[] = [];
+  public loader: boolean = false;
   public peopleForm!: FormGroup;
+
+  public kindPerson = Object.values(KindPerson)
+    .filter((k) => Number.isInteger(k))
+    .map((k) => Number.parseInt(k.toString()));
+  public profileType = Object.values(ProfileType)
+    .filter((k) => Number.isInteger(k))
+    .map((k) => Number.parseInt(k.toString()));
+
+  public people: People = new People();
 
   constructor(
     private peopleService: PeopleService,
-    private formBuilder: FormBuilder
+    private formBuilder: FormBuilder,
+    private route: ActivatedRoute
   ) {}
 
   ngOnInit(): void {
-    this.createForm(new People());
+    this.getParams();
+    this.createForm(this.people);
   }
 
-  createForm(department: People) {
+  getParams() {
+    this.route.queryParams.subscribe((params) => {
+      this.people = JSON.parse(params['peopleInput']);
+    });
+  }
+
+  createForm(people: People) {
     this.peopleForm = this.formBuilder.group({
-      id: new FormControl(department.id),
-      document: new FormControl(department.document),
-      name: new FormControl(department.name),
-      nickname: new FormControl(department.nickname),
-      address: new FormControl(department.address),
+      id: new FormControl(people.id),
+      kindPerson: new FormControl(people.kindPerson, [Validators.required]),
+      document: new FormControl(people.document, [Validators.required]),
+      name: new FormControl(people.name, [Validators.required]),
+      nickname: new FormControl(people.nickname),
+      address: new FormControl(people.address, [Validators.required]),
+      profileType: new FormControl(people.profileType, [Validators.required]),
     });
   }
 
   onSubmit() {
-    this.peopleService.save(this.peopleForm.value).subscribe({
-      next: () => {
-        this.alerts.push({ type: 'success', message: 'Salvo com sucesso!' });
-      },
-      error: (e) => {
-        this.alerts.push({ type: 'danger', message: e });
-      },
-    });
+    this.loader = true;
+
+    if (this.peopleForm.value.id > 0) {
+      this.peopleService.update(this.peopleForm.value).subscribe({
+        next: () => {
+          this.loader = false;
+          this.alerts.push({
+            type: 'success',
+            message: 'Altualizado com sucesso!',
+          });
+        },
+        error: (e) => {
+          this.loader = false;
+          this.alerts.push({ type: 'danger', message: e });
+        },
+      });
+    } else {
+      this.peopleService.save(this.peopleForm.value).subscribe({
+        next: () => {
+          this.loader = false;
+          this.alerts.push({ type: 'success', message: 'Salvo com sucesso!' });
+        },
+        error: (e) => {
+          this.loader = false;
+          this.alerts.push({ type: 'danger', message: e });
+        },
+      });
+    }
   }
 }

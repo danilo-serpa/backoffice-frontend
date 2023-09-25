@@ -1,21 +1,42 @@
+<c-toaster [ngStyle]="{display: 'contents'}">
+  <c-toast class="w-100 my-2" [autohide]="true" [fade]="true" [visible]="true" [color]="alert.type" *ngFor="let alert of alerts">
+    <c-toast-header>Alerta!</c-toast-header>
+    <c-toast-body>{{alert.message}}</c-toast-body>
+  </c-toast>
+</c-toaster>
+<div *ngIf="loader" class="d-flex justify-content-center align-items-center modal">
+  <c-spinner color="info" variant="grow"></c-spinner>
+</div>
 <h2>Lista de Pessoas</h2>
 <table [hover]="true" cTable>
   <thead>
     <tr>
       <th scope="col">#</th>
-      <th scope="col">Documento</th>
       <th scope="col">Nome</th>
       <th scope="col">Apelido</th>
+      <th scope="col">Tipo de Pessoa</th>
+      <th scope="col">Qualificação</th>
+      <th scope="col">Documento</th>
       <th scope="col">Endereço</th>
     </tr>
   </thead>
   <tbody>
     <tr *ngFor="let people of peoples; let index = index">
       <th scope="row">{{index+1}}</th>
-      <td>{{ people.document }}</td>
       <td>{{ people.name }}</td>
       <td>{{ people.nickname }}</td>
+      <td>{{ people.kindPerson | kindPersonDescription }}</td>
+      <td>{{ people.profileType | profileTypeDescription }}</td>
+      <td>{{ people.document }}</td>
       <td>{{ people.address }}</td>
+      <td class="d-flex justify-content-end">
+        <a (click)="edit(people)" class="mx-2">
+          <svg cIcon name="cil-pencil" [title]="'Editar'" size="1xl"></svg>
+        </a>
+        <a (click)="remove(people.id)">
+          <svg cIcon name="cil-trash" [title]="'Excluir'" size="1xl"></svg>
+        </a>
+      </td>
     </tr>
   </tbody>
 </table>

@@ -17,7 +17,11 @@ export class PeopleService {
   constructor(private http: HttpClient) {}
 
   getAll(): Observable<People[]> {
-    return this.http.get<People[]>(this.apiUrl, {headers: this.headers});
+    return this.http.get<People[]>(this.apiUrl, { headers: this.headers });
+  }
+
+  getAllColaborator(): Observable<People[]> {
+    return this.http.get<People[]>(`${this.apiUrl}/GetCollaborator`, { headers: this.headers });
   }
 
   getById(id: number): Observable<People[]> {
@@ -28,7 +32,9 @@ export class PeopleService {
 
   update(department: People): Observable<People[]> {
     return this.http
-      .put<People[]>(`${this.apiUrl}/${department.id}`, department, { headers: this.headers })
+      .put<People[]>(`${this.apiUrl}/${department.id}`, department, {
+        headers: this.headers,
+      })
       .pipe(catchError(this.error));
   }
 
@@ -38,7 +44,7 @@ export class PeopleService {
       .pipe(catchError(this.error));
   }
 
-  Remove(id: number): Observable<People[]> {
+  Remove(id?: number): Observable<People[]> {
     return this.http
       .delete<People[]>(`${this.apiUrl}/${id}`, { headers: this.headers })
       .pipe(catchError(this.error));

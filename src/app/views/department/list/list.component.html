@@ -1,13 +1,19 @@
-<c-alert color="{{alert.type}}" class="d-flex align-items-center" *ngFor="let alert of alerts">
-  <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Info:"><use xlink:href="#exclamation-triangle-fill"/></svg>
-  <div>{{alert.message}}</div>
-</c-alert>
+<c-toaster [ngStyle]="{display: 'contents'}">
+  <c-toast class="w-100 my-2" [autohide]="true" [fade]="true" [visible]="true" [color]="alert.type" *ngFor="let alert of alerts">
+    <c-toast-header>Alerta!</c-toast-header>
+    <c-toast-body>{{alert.message}}</c-toast-body>
+  </c-toast>
+</c-toaster>
+<div *ngIf="loader" class="d-flex justify-content-center align-items-center modal">
+  <c-spinner color="info" variant="grow"></c-spinner>
+</div>
 <h2>Lista de Departamentos</h2>
 <table [hover]="true" cTable>
   <thead>
     <tr>
       <th scope="col" class="col-1">#</th>
-      <th scope="col" class="col-10">Nome</th>
+      <th scope="col" class="col-7">Nome</th>
+      <th scope="col" class="col-3">Responsável</th>
       <th scope="col" class="col-1"></th>
     </tr>
   </thead>
@@ -15,7 +21,11 @@
     <tr *ngFor="let department of departments; let index = index">
       <th scope="row">{{index+1}}</th>
       <td>{{ department.name }}</td>
+      <td>{{ department.people.name }}</td>
       <td class="d-flex justify-content-end">
+        <a (click)="edit(department)" class="mx-2">
+          <svg cIcon name="cil-pencil" [title]="'Editar'" size="1xl"></svg>
+        </a>
         <a (click)="remove(department.id)">
           <svg cIcon name="cil-trash" [title]="'Excluir'" size="1xl"></svg>
         </a>

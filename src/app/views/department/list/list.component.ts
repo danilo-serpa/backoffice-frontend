@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { Department } from '../department.model';
 import { DepartmentService } from '../department.service';
+import { Router } from '@angular/router';
+import { AlertModel } from 'src/app/shared/model/alert.model.ts';
 
 @Component({
   selector: 'app-list',
@@ -8,34 +10,50 @@ import { DepartmentService } from '../department.service';
   styleUrls: ['./list.component.scss']
 })
 export class ListComponent implements OnInit{
-  public alerts: { type: string; message: string }[] = [];
-
+  public alerts: AlertModel[] = [];
+  public loader: boolean = false;
   public departments: Department[] = [];
 
-  constructor(private departmentService: DepartmentService) {};
+  constructor(
+    private departmentService: DepartmentService,
+    private router: Router
+  ) {};
 
   ngOnInit(): void {
     this.getDepartments();
   }
 
   getDepartments(): void {
+    this.loader = true;
     this.departmentService.getAll().subscribe({
       next: (result) => {
+        this.loader = false;
         this.departments = result;
       },
       error: (e) => {
-        alert(e.message);
+        this.loader = false;
+        this.alerts.push({ type: 'danger', message: e });
       }
     })
   }
 
-  remove(id: number) {
+  edit(department: Department) {
+    this.router.navigate(
+      ['/department/form-department'],
+      { queryParams: { departmentInput: JSON.stringify(department) } }
+    );
+  }
+
+  remove(id?: number) {
+    this.loader = true;
     this.departmentService.Remove(id).subscribe({
       next: () => {
+        this.loader = false;
         this.getDepartments();
-        this.alerts.push({ type: 'success', message: 'Excuído com sucesso!' });
+        this.alerts.push({ type: 'success', message: 'Excluído com sucesso!' });
       },
       error: (e) => {
+        this.loader = false;
         this.alerts.push({ type: 'danger', message: e });
       },
     })

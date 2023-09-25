@@ -1,14 +1,19 @@
-<!-- <c-alert color="{{alert.type}}" *ngFor="let alert of alerts">{{alert.message}}</c-alert> -->
-<c-alert color="{{alert.type}}" class="d-flex align-items-center" *ngFor="let alert of alerts">
-    <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Info:"><use xlink:href="#exclamation-triangle-fill"/></svg>
-    <div>{{alert.message}}</div>
-</c-alert>
-<form [formGroup]="departmentForm" (ngSubmit)="onSubmit()">
+<c-toaster [ngStyle]="{display: 'contents'}">
+  <c-toast class="w-100 my-2" [autohide]="true" [fade]="true" [visible]="true" [color]="alert.type" *ngFor="let alert of alerts">
+    <c-toast-header>Alerta!</c-toast-header>
+    <c-toast-body>{{alert.message}}</c-toast-body>
+  </c-toast>
+</c-toaster>
+<div *ngIf="loader" class="d-flex justify-content-center align-items-center modal">
+  <c-spinner color="info" variant="grow"></c-spinner>
+</div>
+<h2>Formulário de Departamentos</h2>
+<form [formGroup]="departmentForm" (ngSubmit)="onSubmit()" class="my-3">
   <c-row class="mb-3">
     <label cLabel class="col-sm-2 col-form-label" for="name"> Nome </label>
     <c-col sm="10">
       <input cFormControl id="name" formControlName="name" required type="text" />
-      <c-form-feedback [valid]="true">
+      <c-form-feedback [valid]="false">
         Por favor, informe o Nome.
       </c-form-feedback>
     </c-col>

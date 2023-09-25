@@ -40,7 +40,7 @@ export class DepartmentService {
       .pipe(catchError(this.error));
   }
 
-  Remove(id: number): Observable<Department[]> {
+  Remove(id?: number): Observable<Department[]> {
     return this.http
       .delete<Department[]>(`${this.apiUrl}/${id}`, { headers: this.headers })
       .pipe(catchError(this.error));

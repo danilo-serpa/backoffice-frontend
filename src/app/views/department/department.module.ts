@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { ListComponent } from './list/list.component';
 import { FormComponent } from './form/form.component';
 import { RouterModule, Routes } from '@angular/router';
-import { AlertModule, ButtonModule, FormModule, GridModule, TableModule } from '@coreui/angular';
+import { AlertModule, ButtonModule, FormModule, GridModule, SpinnerModule, TableModule, ToastModule } from '@coreui/angular';
 import { HttpClientModule } from '@angular/common/http';
 import { DepartmentService } from './department.service';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -28,7 +28,9 @@ const routes: Routes = [
     GridModule,
     ButtonModule,
     AlertModule,
-    IconModule
+    IconModule,
+    SpinnerModule,
+    ToastModule
   ],
   providers: [
     DepartmentService,
