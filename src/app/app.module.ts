@@ -37,6 +37,10 @@ import {
 } from '@coreui/angular';
 
 import { IconModule, IconSetService } from '@coreui/icons-angular';
+import { AccountLayoutComponent } from './containers/account-layout/account-layout.component';
+import { AuthGuard } from './shared/guard/auth.guard';
+import { AccountService } from './views/account/account.service';
+import { HttpClient, HttpClientModule } from '@angular/common/http';
 
 const APP_CONTAINERS = [
   DefaultFooterComponent,
@@ -45,7 +49,7 @@ const APP_CONTAINERS = [
 ];
 
 @NgModule({
-  declarations: [AppComponent, ...APP_CONTAINERS],
+  declarations: [AppComponent, ...APP_CONTAINERS, AccountLayoutComponent],
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
@@ -72,7 +76,8 @@ const APP_CONTAINERS = [
     BadgeModule,
     ListGroupModule,
     CardModule,
-    NgScrollbarModule
+    NgScrollbarModule,
+    HttpClientModule
   ],
   providers: [
     {
@@ -80,7 +85,9 @@ const APP_CONTAINERS = [
       useClass: HashLocationStrategy
     },
     IconSetService,
-    Title
+    Title,
+    AuthGuard,
+    AccountService
   ],
   bootstrap: [AppComponent]
 })

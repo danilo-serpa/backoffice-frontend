@@ -13,43 +13,38 @@ import { environment } from 'src/environments/environment';
 })
 export class PeopleService {
   private urlPeople: string = `${environment.urlAPI}/api/People`;
-  private headers = new HttpHeaders().set('Content-Type', 'application/json');
 
   constructor(private http: HttpClient) {}
 
   getAll(): Observable<People[]> {
-    return this.http.get<People[]>(this.urlPeople, { headers: this.headers });
+    return this.http.get<People[]>(this.urlPeople);
   }
 
   getAllColaborator(): Observable<People[]> {
-    return this.http.get<People[]>(`${this.urlPeople}/GetCollaborator`, {
-      headers: this.headers,
-    });
+    return this.http.get<People[]>(`${this.urlPeople}/GetCollaborator`);
   }
 
   getById(id: number): Observable<People[]> {
     return this.http
-      .get<People[]>(`${this.urlPeople}/${id}`, { headers: this.headers })
+      .get<People[]>(`${this.urlPeople}/${id}`)
       .pipe(catchError(this.error));
   }
 
   update(people: People): Observable<People[]> {
     return this.http
-      .put<People[]>(`${this.urlPeople}/${people.id}`, people, {
-        headers: this.headers,
-      })
+      .put<People[]>(`${this.urlPeople}/${people.id}`, people)
       .pipe(catchError(this.error));
   }
 
   save(people: People): Observable<People[]> {
     return this.http
-      .post<People[]>(`${this.urlPeople}`, people, { headers: this.headers })
+      .post<People[]>(`${this.urlPeople}`, people)
       .pipe(catchError(this.error));
   }
 
   Remove(id?: number): Observable<People[]> {
     return this.http
-      .delete<People[]>(`${this.urlPeople}/${id}`, { headers: this.headers })
+      .delete<People[]>(`${this.urlPeople}/${id}`)
       .pipe(catchError(this.error));
   }
 

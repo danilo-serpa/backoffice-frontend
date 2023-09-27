@@ -16,12 +16,12 @@ export const navItems: INavData[] = [
     iconComponent: { name: 'cil-lan' },
     children: [
       {
-        name: 'Listar',
-        url: '/department/list-department',
-      },
-      {
         name: 'Cadastrar',
         url: '/department/form-department',
+      },
+      {
+        name: 'Listar',
+        url: '/department/list-department',
       },
     ],
   },
@@ -31,12 +31,12 @@ export const navItems: INavData[] = [
     iconComponent: { name: 'cil-group' },
     children: [
       {
-        name: 'Listar',
-        url: '/people/list-people',
-      },
-      {
         name: 'Cadastrar',
         url: '/people/form-people',
+      },
+      {
+        name: 'Listar',
+        url: '/people/list-people',
       },
     ],
   },

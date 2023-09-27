@@ -2,7 +2,6 @@ import { Injectable } from '@angular/core';
 import {
   HttpClient,
   HttpErrorResponse,
-  HttpHeaders,
 } from '@angular/common/http';
 import { Observable, catchError, throwError } from 'rxjs';
 import { Department } from './department.model';
@@ -13,41 +12,36 @@ import { environment } from '../../../environments/environment';
 })
 export class DepartmentService {
   private urlDepartment: string = `${environment.urlAPI}/api/Department`;
-  private headers = new HttpHeaders().set('Content-Type', 'application/json');
 
   constructor(private http: HttpClient) {}
 
   getAll(): Observable<Department[]> {
     return this.http
-      .get<Department[]>(this.urlDepartment, { headers: this.headers })
+      .get<Department[]>(this.urlDepartment)
       .pipe(catchError(this.error));
   }
 
   getById(id: number): Observable<Department[]> {
     return this.http
-      .get<Department[]>(`${this.urlDepartment}/${id}`, { headers: this.headers })
+      .get<Department[]>(`${this.urlDepartment}/${id}`)
       .pipe(catchError(this.error));
   }
 
   update(department: Department): Observable<Department[]> {
     return this.http
-      .put<Department[]>(`${this.urlDepartment}/${department.id}`, department, {
-        headers: this.headers,
-      })
+      .put<Department[]>(`${this.urlDepartment}/${department.id}`, department)
       .pipe(catchError(this.error));
   }
 
   save(department: Department): Observable<Department[]> {
     return this.http
-      .post<Department[]>(`${this.urlDepartment}`, department, {
-        headers: this.headers,
-      })
+      .post<Department[]>(`${this.urlDepartment}`, department)
       .pipe(catchError(this.error));
   }
 
   Remove(id?: number): Observable<Department[]> {
     return this.http
-      .delete<Department[]>(`${this.urlDepartment}/${id}`, { headers: this.headers })
+      .delete<Department[]>(`${this.urlDepartment}/${id}`)
       .pipe(catchError(this.error));
   }
 

@@ -6,22 +6,36 @@ import { Page404Component } from './views/pages/page404/page404.component';
 import { Page500Component } from './views/pages/page500/page500.component';
 import { LoginComponent } from './views/pages/login/login.component';
 import { RegisterComponent } from './views/pages/register/register.component';
+import { AccountLayoutComponent } from './containers/account-layout/account-layout.component';
+import { AuthGuard } from './shared/guard/auth.guard';
 
 const routes: Routes = [
   {
     path: '',
-    redirectTo: 'dashboard',
+    redirectTo: 'account',
     pathMatch: 'full',
+  },
+  {
+    path: '',
+    component: AccountLayoutComponent,
+    children: [
+      {
+        path: 'account',
+        loadChildren: () =>
+          import('./views/account/account.module').then((m) => m.AccountModule),
+      },
+    ]
   },
   {
     path: '',
     component: DefaultLayoutComponent,
     data: {
-      title: 'Home',
+      title: 'Home'
     },
     children: [
       {
         path: 'dashboard',
+        canActivate: [AuthGuard],
         loadChildren: () =>
           import('./views/dashboard/dashboard.module').then(
             (m) => m.DashboardModule
@@ -29,6 +43,7 @@ const routes: Routes = [
       },
       {
         path: 'department',
+        canActivate: [AuthGuard],
         loadChildren: () =>
           import('./views/department/department.module').then(
             (m) => m.DepartmentModule
@@ -36,10 +51,9 @@ const routes: Routes = [
       },
       {
         path: 'people',
+        canActivate: [AuthGuard],
         loadChildren: () =>
-          import('./views/people/people.module').then(
-            (m) => m.PeopleModule
-          ),
+          import('./views/people/people.module').then((m) => m.PeopleModule),
       },
       {
         path: 'theme',
@@ -118,7 +132,7 @@ const routes: Routes = [
       title: 'Register Page',
     },
   },
-  { path: '**', redirectTo: 'dashboard' },
+  { path: '**', redirectTo: 'account' },
 ];
 
 @NgModule({
@@ -126,11 +140,10 @@ const routes: Routes = [
     RouterModule.forRoot(routes, {
       scrollPositionRestoration: 'top',
       anchorScrolling: 'enabled',
-      initialNavigation: 'enabledBlocking'
+      initialNavigation: 'enabledBlocking',
       // relativeLinkResolution: 'legacy'
-    })
+    }),
   ],
-  exports: [RouterModule]
+  exports: [RouterModule],
 })
-export class AppRoutingModule {
-}
+export class AppRoutingModule {}
