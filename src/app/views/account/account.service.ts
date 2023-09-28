@@ -1,9 +1,6 @@
-import {
-  HttpClient,
-  HttpErrorResponse,
-  HttpHeaders,
-} from '@angular/common/http';
-import { Observable, catchError, throwError } from 'rxjs';
+import { BaseService } from './../../shared/service/baseService';
+import { HttpClient } from '@angular/common/http';
+import { Observable, catchError } from 'rxjs';
 import { LoginUser, RegisterUser, UserToken } from './account.model';
 import { Injectable } from '@angular/core';
 import { environment } from '../../../environments/environment';
@@ -11,12 +8,12 @@ import { environment } from '../../../environments/environment';
 @Injectable({
   providedIn: 'root',
 })
-export class AccountService {
+export class AccountService extends BaseService {
   private urlToken: string = `${environment.urlAPI}/api/token`;
 
-  constructor(
-    private http: HttpClient
-  ) {}
+  constructor(private http: HttpClient) {
+    super();
+  }
 
   login(loginUser: LoginUser): Observable<UserToken> {
     return this.http
@@ -32,19 +29,6 @@ export class AccountService {
 
   isAuthenticated(): boolean {
     const token = localStorage.getItem('token');
-    return  !!token;
-  }
-
-  error(error: HttpErrorResponse) {
-    let errorMessage = '';
-    if (error.error instanceof ErrorEvent) {
-      errorMessage = error.error.message;
-    } else {
-      errorMessage = `Error Code: ${error.status}\nMessage: ${error.message}`;
-    }
-    console.log(errorMessage);
-    return throwError(() => {
-      return errorMessage;
-    });
+    return !!token;
   }
 }

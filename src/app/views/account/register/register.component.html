@@ -4,33 +4,85 @@
       <c-col lg="7" md="9" xl="6">
         <c-card class="mx-4">
           <c-card-body class="p-4">
-            <form [formGroup]="formAccount" (ngSubmit)="onSubmit()" cForm>
+            <form
+              [formGroup]="formAccount"
+              (ngSubmit)="onSubmit()"
+              cForm
+              [validated]="validationForm"
+            >
               <h1>Cadastrar</h1>
               <p class="text-medium-emphasis">Crie sua conta</p>
               <c-input-group class="mb-3">
                 <span cInputGroupText>
                   <svg cIcon name="cilUser"></svg>
                 </span>
-                <input autoComplete="name" cFormControl placeholder="Nome de usuário" />
+                <input
+                  autoComplete="name"
+                  cFormControl
+                  placeholder="Nome de usuário"
+                  required
+                  type="text"
+                  formControlName="userName"
+                />
+                <c-form-feedback [valid]="false">
+                  Por favor, informe o Nome.
+                </c-form-feedback>
               </c-input-group>
               <c-input-group class="mb-3">
                 <span cInputGroupText>@</span>
-                <input autoComplete="email" formControlName="email" cFormControl placeholder="Email" />
+                <input
+                  autoComplete="email"
+                  formControlName="email"
+                  cFormControl
+                  placeholder="Email"
+                  required
+                  type="email"
+                />
+                <c-form-feedback [valid]="false">
+                  Por favor, informe o Email.
+                </c-form-feedback>
               </c-input-group>
               <c-input-group class="mb-3">
                 <span cInputGroupText>
                   <svg cIcon name="cilLockLocked"></svg>
                 </span>
-                <input autoComplete="new-password" formControlName="password" cFormControl placeholder="Senha" type="password" />
+                <input
+                  autoComplete="new-password"
+                  formControlName="password"
+                  cFormControl
+                  placeholder="Senha"
+                  required
+                  type="password"
+                />
+                <c-form-feedback [valid]="false">
+                  Por favor, informe a Senha.
+                </c-form-feedback>
               </c-input-group>
               <c-input-group class="mb-4">
                 <span cInputGroupText>
                   <svg cIcon name="cilLockLocked"></svg>
                 </span>
-                <input autoComplete="new-password" formControlName="confirmPassword" cFormControl placeholder="Repita a senha" type="password" />
+                <input
+                  autoComplete="new-password"
+                  formControlName="confirmPassword"
+                  cFormControl
+                  placeholder="Repita a senha"
+                  required
+                  type="password"
+                />
+                <c-form-feedback [valid]="false">
+                  Por favor, Confirme a Senha.
+                </c-form-feedback>
+                <c-form-feedback
+                  *ngIf="formAccount.controls['confirmPassword'].invalid"
+                >
+                  As senhas são diferentes!
+                </c-form-feedback>
               </c-input-group>
               <div class="d-grid">
-                <button cButton color="success" type="submit">Criar conta</button>
+                <button cButton color="success" type="submit">
+                  Criar conta
+                </button>
               </div>
             </form>
           </c-card-body>

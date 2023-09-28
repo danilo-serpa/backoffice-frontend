@@ -1,8 +1,8 @@
 import { KindPerson } from '../../shared/enum/kind-person';
 import { ProfileType } from '../../shared/enum/profile-type';
-import { BsaeModel } from '../../shared/model/bsae.model.ts';
+import { BaseModel } from '../../shared/model/base.model.ts';
 
-export class People extends BsaeModel {
+export class People extends BaseModel {
   public kindPerson: KindPerson = KindPerson.physicalPerson;
   public document: string = '';
   public name: string = '';

@@ -1,20 +1,19 @@
 import { Injectable } from '@angular/core';
-import {
-  HttpClient,
-  HttpErrorResponse,
-  HttpHeaders,
-} from '@angular/common/http';
-import { Observable, catchError, throwError } from 'rxjs';
+import { HttpClient } from '@angular/common/http';
+import { Observable, catchError } from 'rxjs';
 import { People } from './people.model';
 import { environment } from 'src/environments/environment';
+import { BaseService } from 'src/app/shared/service/baseService';
 
 @Injectable({
   providedIn: 'root',
 })
-export class PeopleService {
+export class PeopleService extends BaseService {
   private urlPeople: string = `${environment.urlAPI}/api/People`;
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) {
+    super();
+  }
 
   getAll(): Observable<People[]> {
     return this.http.get<People[]>(this.urlPeople);
@@ -46,18 +45,5 @@ export class PeopleService {
     return this.http
       .delete<People[]>(`${this.urlPeople}/${id}`)
       .pipe(catchError(this.error));
-  }
-
-  error(error: HttpErrorResponse) {
-    let errorMessage = '';
-    if (error.error instanceof ErrorEvent) {
-      errorMessage = error.error.message;
-    } else {
-      errorMessage = `Error Code: ${error.status}\nMessage: ${error.message}`;
-    }
-    console.log(errorMessage);
-    return throwError(() => {
-      return errorMessage;
-    });
   }
 }

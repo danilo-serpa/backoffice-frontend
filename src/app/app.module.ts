@@ -33,6 +33,7 @@ import {
   SharedModule,
   SidebarModule,
   TabsModule,
+  ToastModule,
   UtilitiesModule
 } from '@coreui/angular';
 
@@ -77,7 +78,8 @@ const APP_CONTAINERS = [
     ListGroupModule,
     CardModule,
     NgScrollbarModule,
-    HttpClientModule
+    HttpClientModule,
+    ToastModule
   ],
   providers: [
     {

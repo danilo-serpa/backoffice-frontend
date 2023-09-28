@@ -11,6 +11,7 @@ import { AlertModel } from 'src/app/shared/model/alert.model.ts';
 import { ActivatedRoute } from '@angular/router';
 import { KindPerson } from 'src/app/shared/enum/kind-person';
 import { ProfileType } from 'src/app/shared/enum/profile-type';
+import { AlertService } from 'src/app/shared/service/alert.service';
 
 @Component({
   selector: 'app-form',
@@ -18,9 +19,10 @@ import { ProfileType } from 'src/app/shared/enum/profile-type';
   styleUrls: ['./form.component.scss'],
 })
 export class FormComponent implements OnInit {
-  public alerts: AlertModel[] = [];
   public loader: boolean = false;
   public peopleForm!: FormGroup;
+
+  public validationForm = false;
 
   public kindPerson = Object.values(KindPerson)
     .filter((k) => Number.isInteger(k))
@@ -34,7 +36,8 @@ export class FormComponent implements OnInit {
   constructor(
     private peopleService: PeopleService,
     private formBuilder: FormBuilder,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private alertService: AlertService
   ) {}
 
   ngOnInit(): void {
@@ -61,20 +64,26 @@ export class FormComponent implements OnInit {
   }
 
   onSubmit() {
+
+    if (this.peopleForm.invalid) {
+      this.validationForm = true;
+      return;
+    }
+
     this.loader = true;
 
     if (this.peopleForm.value.id > 0) {
       this.peopleService.update(this.peopleForm.value).subscribe({
         next: () => {
           this.loader = false;
-          this.alerts.push({
+          this.alertService.updateAlert({
             type: 'success',
             message: 'Altualizado com sucesso!',
           });
         },
         error: (e) => {
           this.loader = false;
-          this.alerts.push({ type: 'danger', message: e });
+          this.alertService.updateAlert({ type: 'danger', message: e });
         },
       });
     } else {
@@ -82,11 +91,14 @@ export class FormComponent implements OnInit {
       this.peopleService.save(this.peopleForm.value).subscribe({
         next: () => {
           this.loader = false;
-          this.alerts.push({ type: 'success', message: 'Salvo com sucesso!' });
+          this.alertService.updateAlert({
+            type: 'success',
+            message: 'Sslvo com sucesso!',
+          });
         },
         error: (e) => {
           this.loader = false;
-          this.alerts.push({ type: 'danger', message: e });
+          this.alertService.updateAlert({ type: 'danger', message: e });
         },
       });
     }

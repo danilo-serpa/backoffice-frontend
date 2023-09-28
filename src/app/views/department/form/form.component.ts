@@ -10,7 +10,7 @@ import {
 } from '@angular/forms';
 import { Department } from '../department.model';
 import { ActivatedRoute } from '@angular/router';
-import { AlertModel } from '../../../shared/model/alert.model.ts';
+import { AlertService } from 'src/app/shared/service/alert.service';
 
 @Component({
   selector: 'app-form',
@@ -19,9 +19,9 @@ import { AlertModel } from '../../../shared/model/alert.model.ts';
 })
 export class FormComponent implements OnInit {
   public peoples: People[] = [];
-  public alerts: AlertModel[] = [];
   public loader: boolean = false;
   public departmentForm!: FormGroup;
+  public validationForm = false;
 
   public department: Department = new Department();
 
@@ -29,7 +29,8 @@ export class FormComponent implements OnInit {
     private departmentService: DepartmentService,
     private peopleService: PeopleService,
     private formBuilder: FormBuilder,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private alertService: AlertService
   ) {}
 
   ngOnInit(): void {
@@ -61,26 +62,31 @@ export class FormComponent implements OnInit {
       },
       error: (e) => {
         this.loader = false;
-        this.alerts.push({ type: 'danger', message: e.message });
+        this.alertService.updateAlert({ type: 'danger', message: e });
       },
     });
   }
 
   onSubmit() {
+    if (this.departmentForm.invalid) {
+      this.validationForm = true;
+      return;
+    }
+
     this.loader = true;
 
     if (this.departmentForm.value.id > 0) {
       this.departmentService.update(this.departmentForm.value).subscribe({
         next: () => {
           this.loader = false;
-          this.alerts.push({
+          this.alertService.updateAlert({
             type: 'success',
-            message: 'Altualizado com sucesso!',
+            message: 'Atualizado com sucesso!',
           });
         },
         error: (e) => {
           this.loader = false;
-          this.alerts.push({ type: 'danger', message: e });
+          this.alertService.updateAlert({ type: 'danger', message: e });
         },
       });
     } else {
@@ -88,11 +94,14 @@ export class FormComponent implements OnInit {
       this.departmentService.save(this.departmentForm.value).subscribe({
         next: () => {
           this.loader = false;
-          this.alerts.push({ type: 'success', message: 'Salvo com sucesso!' });
+          this.alertService.updateAlert({
+            type: 'success',
+            message: 'Salvo com sucesso!',
+          });
         },
         error: (e) => {
           this.loader = false;
-          this.alerts.push({ type: 'danger', message: e });
+          this.alertService.updateAlert({ type: 'danger', message: e });
         },
       });
     }

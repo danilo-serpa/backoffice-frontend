@@ -3,6 +3,7 @@ import {
   AbstractControl,
   FormControl,
   FormGroup,
+  ValidationErrors,
   ValidatorFn,
   Validators,
 } from '@angular/forms';
@@ -10,6 +11,7 @@ import { AlertModel } from 'src/app/shared/model/alert.model.ts';
 import { AccountService } from '../account.service';
 import { Router } from '@angular/router';
 import { RegisterUser } from '../account.model';
+import { AlertService } from 'src/app/shared/service/alert.service';
 
 @Component({
   selector: 'app-register',
@@ -21,8 +23,13 @@ export class RegisterComponent {
   public loader: boolean = false;
 
   public formAccount!: FormGroup;
+  public validationForm = false;
 
-  constructor(private accountService: AccountService, private router: Router) {}
+  constructor(
+    private accountService: AccountService,
+    private router: Router,
+    private alertService: AlertService
+  ) {}
 
   ngOnInit(): void {
     this.createForm(new RegisterUser());
@@ -30,6 +37,7 @@ export class RegisterComponent {
 
   createForm(registerUser: RegisterUser) {
     this.formAccount = new FormGroup({
+      userName: new FormControl(registerUser.userName, [Validators.required]),
       email: new FormControl(registerUser.email, [
         Validators.required,
         Validators.email,
@@ -37,22 +45,21 @@ export class RegisterComponent {
       password: new FormControl(registerUser.password, [Validators.required]),
       confirmPassword: new FormControl(registerUser.confirmPassword, [
         Validators.required,
+        this.passwordValidator('password', 'confirmPassword'),
       ]),
-      // validators: [this.confirmPasswordValidator],
     });
   }
 
-  // confirmPasswordValidator(confirm: AbstractControl): ValidatorFN {
-  //   if (confirm.value === this.formAccount.get('password')?.value) {
-  //     return null;
-  //   }
-
-  //   confirm.setErrors({ passwordMismatch: true });
-  //   return { invalid: true};
-  // }
+  passwordValidator(password: string, confirmPassword: string): ValidatorFn {
+    return (control: AbstractControl): ValidationErrors | null => {
+      const match = password === confirmPassword;
+      return match ? { match: true } : null;
+    };
+  }
 
   onSubmit() {
     if (this.formAccount.invalid) {
+      this.validationForm = true;
       return;
     }
 
@@ -64,7 +71,7 @@ export class RegisterComponent {
       },
       error: (e) => {
         this.loader = false;
-        this.alerts.push({ type: 'danger', message: e });
+        this.alertService.updateAlert({ type: 'danger', message: e });
       },
     });
   }

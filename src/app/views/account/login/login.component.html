@@ -1,9 +1,3 @@
-<c-toaster [ngStyle]="{display: 'contents'}">
-  <c-toast class="w-100 my-2" [autohide]="true" [fade]="true" [visible]="true" [color]="alert.type" *ngFor="let alert of alerts">
-    <c-toast-header>Alerta!</c-toast-header>
-    <c-toast-body>{{alert.message}}</c-toast-body>
-  </c-toast>
-</c-toaster>
 <div class="bg-light min-vh-100 d-flex flex-row align-items-center">
   <c-container>
     <c-row class="justify-content-center">
@@ -11,14 +5,17 @@
         <c-card-group>
           <c-card class="p-4">
             <c-card-body>
-              <form [formGroup]="formAccount" (ngSubmit)="login()" cForm>
+              <form [formGroup]="formAccount" (ngSubmit)="login()" [validated]="validationForm" cForm>
                 <h1>Login</h1>
                 <p class="text-medium-emphasis">Faça login em sua conta</p>
                 <c-input-group class="mb-3">
                   <span cInputGroupText>
                     <svg cIcon name="cilUser"></svg>
                   </span>
-                  <input formControlName="email" autoComplete="email" cFormControl placeholder="Email" type="email"/>
+                  <input formControlName="email" autoComplete="email" cFormControl placeholder="Email" required type="email"/>
+                  <c-form-feedback [valid]="false">
+                    Por favor, informe o Email.
+                  </c-form-feedback>
                 </c-input-group>
                 <c-input-group class="mb-4">
                   <span cInputGroupText>
@@ -28,8 +25,12 @@
                     autoComplete="current-password"
                     cFormControl
                     placeholder="Senha"
+                    required
                     type="password"
                   />
+                  <c-form-feedback [valid]="false">
+                    Por favor, informe a Senha.
+                  </c-form-feedback>
                 </c-input-group>
                 <c-row>
                   <c-col xs="6">

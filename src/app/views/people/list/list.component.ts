@@ -3,6 +3,7 @@ import { People } from '../people.model';
 import { PeopleService } from '../people.service';
 import { AlertModel } from 'src/app/shared/model/alert.model.ts';
 import { Router } from '@angular/router';
+import { AlertService } from 'src/app/shared/service/alert.service';
 
 @Component({
   selector: 'app-list',
@@ -10,11 +11,14 @@ import { Router } from '@angular/router';
   styleUrls: ['./list.component.scss'],
 })
 export class ListComponent implements OnInit {
-  public alerts: AlertModel[] = [];
   public loader: boolean = false;
   public peoples: People[] = [];
 
-  constructor(private peopleService: PeopleService, private router: Router) {}
+  constructor(
+    private peopleService: PeopleService,
+    private router: Router,
+    private alertService: AlertService
+  ) {}
 
   ngOnInit(): void {
     this.getPeoples();
@@ -29,7 +33,7 @@ export class ListComponent implements OnInit {
       },
       error: (e) => {
         this.loader = false;
-        this.alerts.push({ type: 'danger', message: e });
+        this.alertService.updateAlert({ type: 'danger', message: e });
       },
     });
   }
@@ -46,11 +50,14 @@ export class ListComponent implements OnInit {
       next: () => {
         this.loader = false;
         this.getPeoples();
-        this.alerts.push({ type: 'success', message: 'Excluído com sucesso!' });
+        this.alertService.updateAlert({
+          type: 'success',
+          message: 'Excluído com sucesso!',
+        });
       },
       error: (e) => {
         this.loader = false;
-        this.alerts.push({ type: 'danger', message: e });
+        this.alertService.updateAlert({ type: 'danger', message: e });
       },
     });
   }

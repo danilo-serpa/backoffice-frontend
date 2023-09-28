@@ -6,6 +6,7 @@ export class LoginUser {
 }
 
 export class RegisterUser {
+  public userName!: string;
   public email!: string;
   public password!: string;
   public confirmPassword!: string;

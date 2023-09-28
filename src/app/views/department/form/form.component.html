@@ -1,14 +1,8 @@
-<c-toaster [ngStyle]="{display: 'contents'}">
-  <c-toast class="w-100 my-2" [autohide]="true" [fade]="true" [visible]="true" [color]="alert.type" *ngFor="let alert of alerts">
-    <c-toast-header>Alerta!</c-toast-header>
-    <c-toast-body>{{alert.message}}</c-toast-body>
-  </c-toast>
-</c-toaster>
 <div *ngIf="loader" class="d-flex justify-content-center align-items-center modal">
   <c-spinner color="info" variant="grow"></c-spinner>
 </div>
 <h2>Formulário de Departamentos</h2>
-<form [formGroup]="departmentForm" (ngSubmit)="onSubmit()" class="my-3">
+<form [formGroup]="departmentForm" (ngSubmit)="onSubmit()" [validated]="validationForm" cForm class="my-3">
   <c-row class="mb-3">
     <label cLabel class="col-sm-2 col-form-label" for="name"> Nome </label>
     <c-col sm="10">
@@ -23,8 +17,7 @@
       Responsável
     </label>
     <c-col sm="10">
-      <select id="peopleId" formControlName="peopleId" aria-label="Default select example" cSelect>
-        <option>Selecione um Responsável</option>
+      <select id="peopleId" formControlName="peopleId" aria-label="Selecione um Responsável" required cSelect>
         <option *ngFor="let people of peoples" value="{{ people.id }}">
           {{ people.name }}
         </option>

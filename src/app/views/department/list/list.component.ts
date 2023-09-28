@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Department } from '../department.model';
 import { DepartmentService } from '../department.service';
 import { Router } from '@angular/router';
-import { AlertModel } from 'src/app/shared/model/alert.model.ts';
+import { AlertService } from 'src/app/shared/service/alert.service';
 
 @Component({
   selector: 'app-list',
@@ -10,13 +10,13 @@ import { AlertModel } from 'src/app/shared/model/alert.model.ts';
   styleUrls: ['./list.component.scss']
 })
 export class ListComponent implements OnInit{
-  public alerts: AlertModel[] = [];
   public loader: boolean = false;
   public departments: Department[] = [];
 
   constructor(
     private departmentService: DepartmentService,
-    private router: Router
+    private router: Router,
+    private alertService: AlertService
   ) {};
 
   ngOnInit(): void {
@@ -32,7 +32,7 @@ export class ListComponent implements OnInit{
       },
       error: (e) => {
         this.loader = false;
-        this.alerts.push({ type: 'danger', message: e });
+        this.alertService.updateAlert({ type: 'danger', message: e });
       }
     })
   }
@@ -50,11 +50,14 @@ export class ListComponent implements OnInit{
       next: () => {
         this.loader = false;
         this.getDepartments();
-        this.alerts.push({ type: 'success', message: 'Excluído com sucesso!' });
+        this.alertService.updateAlert({
+          type: 'success',
+          message: 'Excluído com sucesso!',
+        });
       },
       error: (e) => {
         this.loader = false;
-        this.alerts.push({ type: 'danger', message: e });
+        this.alertService.updateAlert({ type: 'danger', message: e });
       },
     })
   }

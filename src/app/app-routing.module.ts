@@ -24,13 +24,13 @@ const routes: Routes = [
         loadChildren: () =>
           import('./views/account/account.module').then((m) => m.AccountModule),
       },
-    ]
+    ],
   },
   {
     path: '',
     component: DefaultLayoutComponent,
     data: {
-      title: 'Home'
+      title: 'Home',
     },
     children: [
       {
@@ -54,6 +54,12 @@ const routes: Routes = [
         canActivate: [AuthGuard],
         loadChildren: () =>
           import('./views/people/people.module').then((m) => m.PeopleModule),
+      },
+      {
+        path: 'error',
+        canActivate: [AuthGuard],
+        loadChildren: () =>
+          import('./views/error/error.module').then((m) => m.ErrorModule),
       },
       {
         path: 'theme',

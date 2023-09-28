@@ -1,8 +1,8 @@
+import { AlertService } from './../../../shared/service/alert.service';
 import { Component, OnInit } from '@angular/core';
 import { AccountService } from '../account.service';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { LoginUser } from '../account.model';
-import { AlertModel } from 'src/app/shared/model/alert.model.ts';
 import { Router } from '@angular/router';
 
 @Component({
@@ -11,12 +11,12 @@ import { Router } from '@angular/router';
   styleUrls: ['./login.component.scss'],
 })
 export class LoginComponent implements OnInit {
-  public alerts: AlertModel[] = [];
   public loader: boolean = false;
 
   public formAccount!: FormGroup;
+  public validationForm = false;
 
-  constructor(private accountService: AccountService, private router: Router) {}
+  constructor(private accountService: AccountService, private router: Router, private alertService: AlertService) {}
 
   ngOnInit(): void {
     localStorage.setItem('token', '');
@@ -35,6 +35,7 @@ export class LoginComponent implements OnInit {
 
   login() {
     if (this.formAccount.invalid) {
+      this.validationForm = true;
       return;
     }
 
@@ -47,7 +48,7 @@ export class LoginComponent implements OnInit {
       },
       error: (e) => {
         this.loader = false;
-        this.alerts.push({ type: 'danger', message: e });
+        this.alertService.updateAlert({ type: 'danger', message: e });
       },
     });
   }

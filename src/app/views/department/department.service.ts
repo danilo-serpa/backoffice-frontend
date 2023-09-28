@@ -1,19 +1,19 @@
 import { Injectable } from '@angular/core';
-import {
-  HttpClient,
-  HttpErrorResponse,
-} from '@angular/common/http';
-import { Observable, catchError, throwError } from 'rxjs';
+import { HttpClient } from '@angular/common/http';
+import { Observable, catchError } from 'rxjs';
 import { Department } from './department.model';
 import { environment } from '../../../environments/environment';
+import { BaseService } from 'src/app/shared/service/baseService';
 
 @Injectable({
   providedIn: 'root',
 })
-export class DepartmentService {
+export class DepartmentService extends BaseService {
   private urlDepartment: string = `${environment.urlAPI}/api/Department`;
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) {
+    super();
+  }
 
   getAll(): Observable<Department[]> {
     return this.http
@@ -43,18 +43,5 @@ export class DepartmentService {
     return this.http
       .delete<Department[]>(`${this.urlDepartment}/${id}`)
       .pipe(catchError(this.error));
-  }
-
-  error(error: HttpErrorResponse) {
-    let errorMessage = '';
-    if (error.error instanceof ErrorEvent) {
-      errorMessage = error.error.message;
-    } else {
-      errorMessage = `Error Code: ${error.status}\nMessage: ${error.message}`;
-    }
-    console.log(errorMessage);
-    return throwError(() => {
-      return errorMessage;
-    });
   }
 }

@@ -1,22 +1,19 @@
-<c-toaster [ngStyle]="{display: 'contents'}">
-  <c-toast class="w-100 my-2" [autohide]="true" [fade]="true" [visible]="true" [color]="alert.type" *ngFor="let alert of alerts">
-    <c-toast-header>Alerta!</c-toast-header>
-    <c-toast-body>{{alert.message}}</c-toast-body>
-  </c-toast>
-</c-toaster>
 <div *ngIf="loader" class="d-flex justify-content-center align-items-center modal">
   <c-spinner color="info" variant="grow"></c-spinner>
 </div>
 <h2>Formulário de Pessoas</h2>
-<form [formGroup]="peopleForm" (ngSubmit)="onSubmit()" class="my-3">
+<form [formGroup]="peopleForm" (ngSubmit)="onSubmit()" class="my-3" [validated]="validationForm" cForm>
   <c-row class="mb-3">
     <label cLabel class="col-sm-2 col-form-label">
       Tipo de Pessoa
     </label>
     <c-col sm="10">
       <c-form-check inline *ngFor="let enum of kindPerson">
-        <input cFormCheckInput [id]="'kindPerson'+enum" [value]="enum" formControlName="kindPerson" name="kindPerson" type="radio" title="Tipo de pessoa" />
+        <input cFormCheckInput [id]="'kindPerson'+enum" [value]="enum" formControlName="kindPerson" name="kindPerson" required type="radio" title="Tipo de pessoa" />
         <label cFormCheckLabel [for]="'kindPerson'+enum">{{ enum | kindPersonDescription}}</label>
+        <c-form-feedback [valid]="false">
+          Por favor, informe o Tipo de Pessoa
+        </c-form-feedback>
       </c-form-check>
     </c-col>
   </c-row>
@@ -26,8 +23,11 @@
     </label>
     <c-col sm="10">
       <c-form-check inline *ngFor="let enum of profileType; let index = index">
-        <input cFormCheckInput [id]="'teste' + index" [value]="enum" formControlName="profileType" name="profileType" type="radio" title="Qualificação"/>
+        <input cFormCheckInput [id]="'teste' + index" [value]="enum" formControlName="profileType" name="profileType" required type="radio" title="Qualificação"/>
         <label cFormCheckLabel [for]="'teste' + index">{{ enum | profileTypeDescription}}</label>
+        <c-form-feedback [valid]="false">
+          Por favor, informe a Qualificação
+        </c-form-feedback>
       </c-form-check>
     </c-col>
   </c-row>
@@ -36,7 +36,10 @@
       {{ peopleForm.controls['kindPerson'].value == 1 ? 'CPF' : 'CNPJ' }}
     </label>
     <c-col sm="10">
-      <input cFormControl id="document" formControlName="document" type="text" />
+      <input cFormControl id="document" formControlName="document" required type="text" />
+      <c-form-feedback [valid]="false">
+        Por favor, informe o {{ peopleForm.controls['kindPerson'].value == 1 ? 'CPF' : 'CNPJ' }}
+      </c-form-feedback>
     </c-col>
   </c-row>
   <c-row class="mb-3">
@@ -53,7 +56,8 @@
       Apelido
     </label>
     <c-col sm="10">
-      <input cFormControl id="nickname" formControlName="nickname" type="text" />
+      <input cFormControl id="nickname" formControlName="nickname" type="text" required/>
+      <c-form-feedback [valid]="false">Por favor, informe o Apelido.</c-form-feedback>
     </c-col>
   </c-row>
   <c-row class="mb-3">
@@ -61,7 +65,8 @@
       Endereço
     </label>
     <c-col sm="10">
-      <input cFormControl id="address" formControlName="address" type="text" />
+      <input cFormControl id="address" formControlName="address" type="text" required/>
+      <c-form-feedback [valid]="false">Por favor, informe o Nome.</c-form-feedback>
     </c-col>
   </c-row>
   <button cButton type="submit">Salvar</button>
