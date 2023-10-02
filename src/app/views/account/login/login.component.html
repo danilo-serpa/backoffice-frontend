@@ -26,8 +26,11 @@
                     cFormControl
                     placeholder="Senha"
                     required
-                    type="password"
+                    [type]="passVisible ? 'text' : 'password'"
                   />
+                  <span cInputGroupText>
+                    <a (click)="togglePassVisible()" [style.opacity]="!passVisible ? 1 : 0.5"><svg cIcon name="cilLowVision"></svg></a>
+                  </span>
                   <c-form-feedback [valid]="false">
                     Por favor, informe a Senha.
                   </c-form-feedback>

@@ -7,7 +7,6 @@ import {
 } from '@angular/forms';
 import { PeopleService } from '../people.service';
 import { People } from '../people.model';
-import { AlertModel } from 'src/app/shared/model/alert.model.ts';
 import { ActivatedRoute } from '@angular/router';
 import { KindPerson } from 'src/app/shared/enum/kind-person';
 import { ProfileType } from 'src/app/shared/enum/profile-type';

@@ -12,11 +12,15 @@ import { Router } from '@angular/router';
 })
 export class LoginComponent implements OnInit {
   public loader: boolean = false;
-
+  public passVisible: boolean = false;
   public formAccount!: FormGroup;
   public validationForm = false;
 
-  constructor(private accountService: AccountService, private router: Router, private alertService: AlertService) {}
+  constructor(
+    private accountService: AccountService,
+    private router: Router,
+    private alertService: AlertService
+  ) {}
 
   ngOnInit(): void {
     localStorage.setItem('token', '');
@@ -51,5 +55,9 @@ export class LoginComponent implements OnInit {
         this.alertService.updateAlert({ type: 'danger', message: e });
       },
     });
+  }
+
+  togglePassVisible() {
+    this.passVisible = !this.passVisible;
   }
 }

@@ -53,7 +53,7 @@ export class RegisterComponent {
   passwordValidator(password: string, confirmPassword: string): ValidatorFn {
     return (control: AbstractControl): ValidationErrors | null => {
       const match = password === confirmPassword;
-      return match ? { match: true } : null;
+      return match ? { match: true } : { match: false };
     };
   }
 
